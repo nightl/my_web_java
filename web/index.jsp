@@ -35,16 +35,8 @@
   </head>
   <body>
 
-  <% int x = 1; %>
-  <% if (x == 2) { %>
-  <h1>11111</h1>
-  <% } else { %>
-  <h1>22222</h1>
-  <% } %>
-
   <h1>Hello World!
     <a href="login.jsp">登录</a>
-    <a href="ttt/t22.html">t22</a>
     <%=user %>
     <%=name %>
     <%=stdnum %>
@@ -72,7 +64,7 @@
       <% } %>
   </table>
 
-  <form action="/upload/UpLoad" method="post" enctype="multipart/form-data">
+  <form action="/servlet/UploadServlet" method="post" enctype="multipart/form-data">
       请选择上传的图片或文件:<input type="file" name="fileName"/><input type="submit" value="上传"/>
   </form>
 

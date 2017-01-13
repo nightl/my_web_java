@@ -1,4 +1,4 @@
-package com.myweb.ltz;
+package com.myweb.ltz.servlet;
 
 import com.myweb.ltz.SqlHelper;
 import com.myweb.ltz.User;
