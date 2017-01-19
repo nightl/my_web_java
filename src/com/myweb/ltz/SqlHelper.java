@@ -8,7 +8,7 @@ import com.sun.rowset.CachedRowSetImpl;
  */
 public class SqlHelper
 {
-    private static String url = "jdbc:mysql://localhost:3306/test";
+    private static String url = "jdbc:mysql://localhost:3306/test?allowMultiQueries=true";
     private static String jar = "com.mysql.jdbc.Driver";
     private static String username = "root";
     private static String password = "123456";
