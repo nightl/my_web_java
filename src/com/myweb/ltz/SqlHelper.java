@@ -40,7 +40,28 @@ public class SqlHelper
             return null;
         }
     }
-
+    
+    public void Add(String sql)
+    {
+        try
+        {
+            Class.forName(jar);
+            conn = DriverManager.getConnection(url, username, password);
+            System.out.println(conn);
+            stmt = conn.createStatement();
+            stmt.execute(sql);
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    
+    }
+    
     public void Close() throws SQLException
     {
         if (conn != null) conn.close();

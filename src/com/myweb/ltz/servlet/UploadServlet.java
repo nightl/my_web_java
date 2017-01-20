@@ -1,8 +1,9 @@
 package com.myweb.ltz.servlet;
 
+import com.myweb.ltz.SqlHelper;
+
 import java.io.IOException;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +16,6 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import java.io.*;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -98,6 +98,7 @@ public class UploadServlet extends HttpServlet
                         //使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\" + filename)当中
                         fos.write(buffer, 0, length);
                     }
+                    
                     //关闭输入流
                     is.close();
                     //关闭输出流
@@ -105,6 +106,11 @@ public class UploadServlet extends HttpServlet
                     //删除处理文件上传时生成的临时文件
                     item.delete();
                     message = "文件上传成功";
+                    
+                    //将文件路径写入数据库
+                    String sql = "insert into user_file values ('ltz','E:'\\''\\'idea_pro'\\''\\'y_web_java'\\''\\'out'\''\'artifacts'\''\'my_web_java_war_exploded'\''\'picture'\''\'" + fileName + "')";
+                    SqlHelper ins = new SqlHelper();
+                    ins.Add(sql);
                 }
             }
         }
