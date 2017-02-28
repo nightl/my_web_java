@@ -23,11 +23,6 @@ public class RegisterServlet extends HttpServlet
 {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        doGet(request, response);
-    }
-    
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
         request.setCharacterEncoding("UTF-8");//表单有中文
         response.setContentType("text/html;charset=UTF-8");//回复有中文
     
@@ -41,8 +36,7 @@ public class RegisterServlet extends HttpServlet
         String stuid = request.getParameter("stuid");
     
         String sql = "select password from student where username='" + user + "'";
-        SqlHelper sel = new SqlHelper();
-        CachedRowSetImpl crr = sel.Select(sql);
+        CachedRowSetImpl crr = SqlHelper.Query(sql);
         try
         {
             if (crr.next())
@@ -63,17 +57,22 @@ public class RegisterServlet extends HttpServlet
                 }
                 else
                 {
-                    String sql1 = "insert into student values('" + user +"'," + "'" + pswd + "'," + "'" + gender + "'," + "'" + name + "'," + "'" + age + "'," + "'" + stuid + "'," + "'普通用户')";
-                    SqlHelper ins = new SqlHelper();
-                    ins.Add(sql1);
+                    //String sql12 = "insert into student values('" + user +"'," + "'" + pswd + "'," + "'" + gender + "'," + "'" + name + "'," + "'" + age + "'," + "'" + stuid + "'," + "'普通用户')";
+                
+                    String sql1 = "insert into student values(?, ?, ?, ?, ?, ?, ?)";
+                    int a = SqlHelper.NoneQuery(sql1, user, pswd, gender, name, age, stuid, "普通用户");
                     response.sendRedirect("/index.jsp");
                 }
             }
-        
         }
         catch (SQLException e)
         {
             e.printStackTrace();
         }
+    }
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        doPost(request, response);
     }
 }

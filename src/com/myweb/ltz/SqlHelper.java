@@ -8,72 +8,108 @@ import com.sun.rowset.CachedRowSetImpl;
  */
 public class SqlHelper
 {
-    private static String url = "jdbc:mysql://localhost:3306/test?allowMultiQueries=true";
-    private static String jar = "com.mysql.jdbc.Driver";
-    private static String username = "root";
-    private static String password = "123456";
-
-    private Connection conn;
-    private Statement stmt;
-    private PreparedStatement pstmt;
-    private ResultSet rset;
-    private CachedRowSetImpl crs;
-
-    public CachedRowSetImpl Select(String sql)
+    protected static String url = "jdbc:mysql://localhost:3306/test?allowMultiQueries=true";
+    protected static String jar = "com.mysql.jdbc.Driver";
+    protected static String username = "root";
+    protected static String password = "123456";
+    
+    public static CachedRowSetImpl Select(String sql)
     {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rset = null;
+        CachedRowSetImpl crs = null;
         try
         {
             Class.forName(jar);
             conn = DriverManager.getConnection(url, username, password);
-            System.out.println(conn);
             stmt = conn.createStatement();
             rset = stmt.executeQuery(sql);
             crs = new CachedRowSetImpl();
             crs.populate(rset);
-            Close();
+            conn.close();
+            stmt.close();
+            rset.close();
             return crs;
         }
-        catch (Exception e)
+        catch (Exception e1)
         {
-            try{ Close(); }
+            try
+            {
+                if (conn != null) conn.close();
+                if (stmt != null) stmt.close();
+                if (rset != null) rset.close();
+                if (crs != null) crs.close();
+            }
             catch (Exception e2) { }
             return null;
         }
     }
     
-    public void Add(String sql)
+    public static CachedRowSetImpl Query(String sql, Object... parameters)
     {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        CachedRowSetImpl crs = null;
         try
         {
             Class.forName(jar);
             conn = DriverManager.getConnection(url, username, password);
-            System.out.println(conn);
-            stmt = conn.createStatement();
-            stmt.execute(sql);
+            pstmt = conn.prepareStatement(sql);
+            for(int i = 0; i < parameters.length; i++)
+            {
+                pstmt.setObject(i + 1, parameters[i]);
+            }
+            rset = pstmt.executeQuery();
+            crs = new CachedRowSetImpl();
+            crs.populate(rset);
+            conn.close();
+            pstmt.close();
+            rset.close();
+            return crs;
         }
-        catch (ClassNotFoundException e)
+        catch (Exception e1)
         {
-            e.printStackTrace();
+            try
+            {
+                if (conn != null) conn.close();
+                if (pstmt != null) pstmt.close();
+                if (rset != null) rset.close();
+                if (crs != null) crs.close();
+            }
+            catch (Exception e2) { }
+            return null;
         }
-        catch (SQLException e)
+    }
+    
+    public static int NoneQuery(String sql, Object... parameters)
+    {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try
         {
-            e.printStackTrace();
+            Class.forName(jar);
+            conn = DriverManager.getConnection(url, username, password);
+            pstmt = conn.prepareStatement(sql);
+            for(int i = 0; i < parameters.length; i++)
+            {
+                pstmt.setObject(i + 1, parameters[i]);
+            }
+            int re = pstmt.executeUpdate();
+            conn.close();
+            return re;
         }
-    
+        catch (Exception e1)
+        {
+            try
+            {
+                if (conn != null) conn.close();
+                if (pstmt != null) pstmt.close();
+            }
+            catch (Exception e2) { }
+            return -1;
+        }
     }
     
-    public void Close() throws SQLException
-    {
-        if (conn != null) conn.close();
-        if (stmt != null) stmt.close();
-        if (pstmt != null) pstmt.close();
-        if (rset != null) rset.close();
-    }
-
-    public CachedRowSetImpl getRowSet()
-    {
-        return crs;
-    }
-
 }
-

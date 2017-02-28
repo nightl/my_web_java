@@ -7,6 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setCharacterEncoding("UTF-8"); %>
 <% HttpSession seesion = request.getSession(); %>
 <% ErrorMessage error = (ErrorMessage)seesion.getAttribute("msg"); %>
 
@@ -15,7 +16,7 @@
     <title>注册</title>
 </head>
 <body>
-    <form action="/servlet/RegisterServlet" method="get">
+    <form action="/servlet/RegisterServlet" method="post">
         <table border="0" cellpadding="10px" cellspacing="0" align="center">
             <colgroup align="left">
             <tr>

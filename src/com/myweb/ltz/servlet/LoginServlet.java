@@ -23,22 +23,18 @@ public class LoginServlet extends HttpServlet
 {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        doGet(request, response);
-    }
-    
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
         request.setCharacterEncoding("UTF-8");//表单有中文
         response.setContentType("text/html;charset=UTF-8");//回复有中文
-        
+    
         PrintWriter out = response.getWriter();
         String user = request.getParameter("username");
         String pswd = request.getParameter("password");
-        
-        String sql = "select password from student where username='" + user + "'";
-        SqlHelper sel = new SqlHelper();
-        CachedRowSetImpl crr = sel.Select(sql);
-        
+    
+        //String sql = "select password from student where username='" + user + "'";
+        String sql = "select password from student where username=?";
+    
+        CachedRowSetImpl crr = SqlHelper.Query(sql,user);
+    
         try
         {
             if (!crr.next())
@@ -71,5 +67,10 @@ public class LoginServlet extends HttpServlet
         {
             e.printStackTrace();
         }
+    }
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        doPost(request, response);
     }
 }

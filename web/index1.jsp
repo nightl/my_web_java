@@ -65,7 +65,7 @@
       <% CachedRowSetImpl crsi = sele.Select(sql); %>
 
       <% crsi.next(); %>
-      <% if (crsi.getString(6).equals("普通用户")) { %>
+      <% if (crsi.getString(7).equals("普通用户")) { %>
       <tr>
           <td><%=crsi.getString(1) %></td>
           <td><%=crsi.getString(2) %></td>
@@ -93,6 +93,8 @@
   <form action="/servlet/UploadServlet" method="post" enctype="multipart/form-data">
       请选择上传的图片或文件:<input type="file" name="fileName"/><input type="submit" value="上传"/>
   </form>
+
+  <input name="pclog" type="button" value="留言板" onClick="location.href='messageboard.jsp'">
 
   <style>
       table {

@@ -17,7 +17,7 @@
 
 <body>
 <h1>登录</h1>
-<form action="/LoginServlet" id="login" method="get">
+<form action="/LoginServlet" id="login" method="post">
     <p>用户名：<input type="text" name="username"/></p>
     <p>密 码： <input type="password" name="password"/></p>
     <% if (user != null) { %>

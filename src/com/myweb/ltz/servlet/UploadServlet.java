@@ -110,7 +110,7 @@ public class UploadServlet extends HttpServlet
                     //将文件路径写入数据库
                     String sql = "insert into user_file values ('ltz','E:'\\''\\'idea_pro'\\''\\'y_web_java'\\''\\'out'\''\'artifacts'\''\'my_web_java_war_exploded'\''\'picture'\''\'" + fileName + "')";
                     SqlHelper ins = new SqlHelper();
-                    ins.Add(sql);
+                    ins.NoneQuery(sql);
                 }
             }
         }
