@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>登录</title>
+    <script src="ajax.js"></script>
 </head>
 <body>
 <h1>登录</h1>
@@ -20,8 +21,17 @@
         var pwd = document.getElementById("password").value;
         var url = "/LoginServlet?username=" + usr + "&password=" + pwd;
 
+        var onSuccess = function (re)
+        {
+            document.getElementById("mess").innerHTML = re;
+        };
+
+        ajax(url, onSuccess);
+
+        /*
         var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft XMLHTTP');
         xmlhttp.open("POST", url, true);
+        xmlhttp.send();
 
         xmlhttp.onreadystatechange = function ()
         {
@@ -31,10 +41,10 @@
                 {
                     //alert(xmlhttp.responseText);
                     document.getElementById("mess").innerHTML = xmlhttp.responseText;
-//                    if (xmlhttp.responseText == "登录成功！")
-//                    {
-//                        //.....
-//                    }
+                    if (xmlhttp.responseText == "登录成功！")
+                    {
+                        //.....
+                    }
                 }
                 else
                 {
@@ -42,26 +52,8 @@
                 }
             }
         };
-        xmlhttp.send();
+        */
     }
-
-
-//    function ajax(url, onsuccess) {
-//        var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft XMLHTTP');
-//        xmlhttp.open("POST", url, true);
-//        xmlhttp.send();
-//        xmlhttp.onreadystatechange = function () {
-//            if (xmlhttp.readyState == 4) {
-//                if (xmlhttp.status == 200) {
-//                    onsuccess(xmlhttp.responseText);
-//                    //alert(xmlhttp.responseText);
-//                }
-//                else {
-//                    alert("Ajax return Error");
-//                }
-//            }
-//        }
-//    }
 </script>
 </body>
 </html>
