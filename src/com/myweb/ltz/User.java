@@ -1,33 +1,59 @@
 package com.myweb.ltz;
 
+import com.sun.rowset.CachedRowSetImpl;
+
+import java.sql.SQLException;
+
 /**
  * Created by we on 2017/1/13.
  */
 public class User
 {
-    private String name;
-    private String password;
-    private String message;
+    private String username;
+    private String password1;
+    public boolean err;
     
-    public User(String name1, String password1, String message1)
+    public User(String name1) throws SQLException
     {
-        this.name = name1;
-        this.password = password1;
-        this.message = message1;
+        this.username = name1;
+        String sql = "select password from student where username=?";
+        CachedRowSetImpl crr = SqlHelper.Query(sql,this.username);
+        try
+        {
+            if (crr.next())
+            {
+                this.password1 = crr.getString(1);
+            }
+            else
+            {
+                this.username = null;
+            }
+        }
+        catch (SQLException e)
+        {
+            this.username = null;
+            this.err = true;
+        }
     }
     
-    public String Getname()
+    public int Longin(String password2)
     {
-        return name;
+        if (this.err)
+        {
+            return 3;
+        }
+        else if (this.username == null)
+        {
+            return 0;
+        }
+        else if (this.password1.equals(password2))
+        {
+            return 1;
+        }
+        else
+        {
+            return 2;
+        }
     }
     
-    public String Getpassword()
-    {
-        return password;
-    }
-    
-    public String Getmessage()
-    {
-        return message;
-    }
 }

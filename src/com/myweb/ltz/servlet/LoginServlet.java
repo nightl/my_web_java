@@ -28,45 +28,33 @@ public class LoginServlet extends HttpServlet
     
         PrintWriter out = response.getWriter();
         String user = request.getParameter("username");
-        String pswd = request.getParameter("password");
-    
-        //String sql = "select password from student where username='" + user + "'";
-        String sql = "select password from student where username=?";
-    
-        CachedRowSetImpl crr = SqlHelper.Query(sql,user);
+        String pwd = request.getParameter("password");
+        String message = "";
     
         try
         {
-            if (!crr.next())
+            User user1 = new User(user);
+            int result = user1.Longin(pwd);
+            
+            if (result == 0)
             {
-                User user1 = new User(user, pswd, "用户名不存在！");
-                HttpSession seesion = request.getSession();
-                seesion.setAttribute("msg", user1);
-                response.sendRedirect("index.jsp");
+                message = "用户名不存在！";
+            }
+            else if (result == 1)
+            {
+                message = "登录成功！";
             }
             else
             {
-                String pwd = crr.getString(1);
-                if (pswd.equals(pwd))
-                {
-                    out.print("登录成功！");
-                    HttpSession seesion = request.getSession();
-                    seesion.setAttribute("usr", user);
-                    response.sendRedirect("index1.jsp");
-                }
-                else
-                {
-                    User user1 = new User(user, pswd, "密码错误！");
-                    HttpSession seesion = request.getSession();
-                    seesion.setAttribute("msg", user1);
-                    response.sendRedirect("index.jsp");
-                }
+                message = "密码错误！";
             }
         }
         catch (SQLException e)
         {
             e.printStackTrace();
         }
+    
+        out.print(message);
     }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
