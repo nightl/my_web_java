@@ -23,9 +23,15 @@
 
         var onSuccess = function (re)
         {
-            document.getElementById("mess").innerHTML = re;
+            if (re == "登录成功！")
+            {
+                window.location.href="/index1.jsp";
+            }
+            else
+            {
+                document.getElementById("mess").innerHTML = re;
+            }
         };
-
         ajax(url, onSuccess);
 
         /*

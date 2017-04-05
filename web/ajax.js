@@ -5,6 +5,7 @@ function ajax(url, onSuccess)
 {
     var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft XMLHTTP');
     xmlhttp.open("POST", url, true);
+    xmlhttp.setAttribute();
     xmlhttp.send();
 
     xmlhttp.onreadystatechange = function ()

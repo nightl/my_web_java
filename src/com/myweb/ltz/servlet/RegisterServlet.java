@@ -2,6 +2,7 @@ package com.myweb.ltz.servlet;
 
 import com.myweb.ltz.ErrorMessage;
 import com.myweb.ltz.SqlHelper;
+import com.myweb.ltz.User;
 import com.sun.rowset.CachedRowSetImpl;
 
 import java.io.IOException;
@@ -28,42 +29,28 @@ public class RegisterServlet extends HttpServlet
     
         PrintWriter out = response.getWriter();
         String user = request.getParameter("username");
-        String pwd = request.getParameter("pwd");
-        String pswd = request.getParameter("password");
+        String pwd1 = request.getParameter("pwd1");
+        String pwd2 = request.getParameter("pwd2");
         String gender = request.getParameter("sex");
         String name = request.getParameter("relname");
-        String age = request.getParameter("age");
-        String stuid = request.getParameter("stuid");
-    
-        String sql = "select password from student where username='" + user + "'";
-        CachedRowSetImpl crr = SqlHelper.Query(sql);
+        int age = Integer.parseInt(request.getParameter("age"));
+        int stuid = Integer.parseInt(request.getParameter("stuid"));
+        String message = "";
+        
         try
         {
-            if (crr.next())
+            User user1 = new User(user);
+            int result = user1.SignUp(pwd1, pwd2, gender, name, age, stuid);
+            
+            if (result == 2)
             {
-                ErrorMessage error1 = new ErrorMessage("用户名已存在！"," ");
-                HttpSession seesion = request.getSession();
-                seesion.setAttribute("msg", error1);
-                response.sendRedirect("/register.jsp");
+                message = "用户名已存在！";
             }
             else
             {
-                if (!pwd.equals(pswd))
-                {
-                    ErrorMessage error1 = new ErrorMessage(" ","两次输入的密码不一致！");
-                    HttpSession seesion = request.getSession();
-                    seesion.setAttribute("msg", error1);
-                    response.sendRedirect("/register.jsp");
-                }
-                else
-                {
-                    //String sql12 = "insert into student values('" + user +"'," + "'" + pswd + "'," + "'" + gender + "'," + "'" + name + "'," + "'" + age + "'," + "'" + stuid + "'," + "'普通用户')";
-                
-                    String sql1 = "insert into student values(?, ?, ?, ?, ?, ?, ?)";
-                    int a = SqlHelper.NoneQuery(sql1, user, pswd, gender, name, age, stuid, "普通用户");
-                    response.sendRedirect("/index.jsp");
-                }
+                message = "注册成功！";
             }
+            out.print(message);
         }
         catch (SQLException e)
         {

@@ -29,6 +29,8 @@ public class LoginServlet extends HttpServlet
         PrintWriter out = response.getWriter();
         String user = request.getParameter("username");
         String pwd = request.getParameter("password");
+        HttpSession seesion = request.getSession();
+        seesion.setAttribute("usr", user);
         String message = "";
     
         try
@@ -48,13 +50,14 @@ public class LoginServlet extends HttpServlet
             {
                 message = "密码错误！";
             }
+            out.print(message);
         }
         catch (SQLException e)
         {
             e.printStackTrace();
         }
     
-        out.print(message);
+        
     }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
